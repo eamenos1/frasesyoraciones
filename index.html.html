@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misión Verbo: ¿Frase u Oración? - 3º Primaria</title>
+    <!-- Tailwind CSS para diseño responsivo y moderno -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tone.js para efectos de sonido divertidos sin archivos externos -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <!-- Fuente amigable y legible para niños: Fredoka y Nunito -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #fef9c3 50%, #fce7f3 100%);
+            min-height: 100vh;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        h1, h2, h3, .font-display {
+            font-family: 'Fredoka', sans-serif;
+        }
+        /* Animaciones suaves */
+        @keyframes bounceIn {
+            0% { transform: scale(0.85); opacity: 0; }
+            60% { transform: scale(1.03); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        .animate-bounce-in {
+            animation: bounceIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+        /* Estilo de botón 3D táctil para niños */
+        .btn-3d {
+            transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.18);
+        }
+        .btn-3d:active:not(:disabled) {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.18);
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-between p-3 sm:p-6 text-slate-800">
+
+    <!-- CABECERA -->
+    <header class="w-full max-w-3xl flex flex-wrap items-center justify-between bg-white/90 backdrop-blur-md rounded-3xl p-4 shadow-lg border-4 border-sky-200 mb-4">
+        <div class="flex items-center gap-3">
+            <div class="bg-amber-400 text-white p-2.5 rounded-2xl shadow-inner text-2xl sm:text-3xl">
+                🕵️‍♂️
+            </div>
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold text-sky-700 leading-tight">Detectives de Palabras</h1>
+                <p class="text-xs sm:text-sm font-bold text-slate-500">Lengua • 3º de Primaria</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3 mt-2 sm:mt-0">
+            <!-- Botón de Ayuda / Reglas -->
+            <button type="button" id="btn-help" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-bold py-2.5 px-4 rounded-2xl text-sm sm:text-base flex items-center gap-1.5 transition cursor-pointer">
+                <span>💡</span> <span class="hidden sm:inline">Recordar regla</span><span class="sm:hidden">Regla</span>
+            </button>
+            
+            <!-- Botón de Sonido -->
+            <button type="button" id="btn-sound" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold p-2.5 rounded-2xl text-lg transition cursor-pointer" title="Activar o silenciar sonido">
+                🔊
+            </button>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main class="w-full max-w-3xl flex-grow flex flex-col justify-center">
+
+        <!-- PANTALLA 1: BIENVENIDA Y EXPLICACIÓN -->
+        <section id="screen-start" class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-amber-300 text-center animate-bounce-in">
+            <div class="inline-block bg-amber-100 text-amber-800 font-bold px-4 py-1.5 rounded-full text-sm mb-3">
+                ¡Hola, detective! ¿Listo para el reto?
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-bold text-slate-800 mb-6">¿Frase u Oración?</h2>
+
+            <!-- Tarjetas comparativas -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 text-left">
+                <!-- Tarjeta FRASE -->
+                <div class="bg-rose-50 border-2 border-rose-200 rounded-2xl p-5 relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="bg-rose-500 text-white font-display font-bold px-3 py-1 rounded-xl text-lg">FRASE</span>
+                        <span class="text-2xl">🚫🏃‍♂️</span>
+                    </div>
+                    <p class="font-bold text-rose-900 text-base sm:text-lg mb-2">NO tiene ningún verbo.</p>
+                    <p class="text-slate-600 text-sm mb-3">Expresa una idea, un saludo o una exclamación, pero nadie realiza ninguna acción.</p>
+                    <div class="bg-white rounded-xl p-3 border border-rose-200 text-sm">
+                        <p class="font-bold text-slate-700">Ejemplos:</p>
+                        <ul class="list-disc list-inside text-rose-700 font-semibold mt-1">
+                            <li>¡Buenos <span class="bg-sky-100 text-sky-800 px-1.5 rounded font-extrabold">días</span>!</li>
+                            <li>¡Qué <span class="bg-sky-100 text-sky-800 px-1.5 rounded font-extrabold">golazo</span>!</li>
+                            <li>Un <span class="bg-sky-100 text-sky-800 px-1.5 rounded font-extrabold">helado</span> de fresa.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Tarjeta ORACIÓN -->
+                <div class="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-5 relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="bg-emerald-500 text-white font-display font-bold px-3 py-1 rounded-xl text-lg">ORACIÓN</span>
+                        <span class="text-2xl">✅⚽</span>
+                    </div>
+                    <p class="font-bold text-emerald-900 text-base sm:text-lg mb-2">SÍ tiene al menos un verbo.</p>
+                    <p class="text-slate-600 text-sm mb-3">Siempre hay una palabra que indica una acción (qué hace, qué ocurre o cómo está).</p>
+                    <div class="bg-white rounded-xl p-3 border border-emerald-200 text-sm">
+                        <p class="font-bold text-slate-700">Ejemplos:</p>
+                        <ul class="list-disc list-inside text-emerald-700 font-semibold mt-1">
+                            <li><span class="bg-sky-100 text-sky-800 px-1.5 rounded font-extrabold">Lucía</span> <span class="bg-amber-200 text-amber-900 px-1.5 rounded font-extrabold">lee</span> un libro.</li>
+                            <li>El <span class="bg-sky-100 text-sky-800 px-1.5 rounded font-extrabold">perro</span> <span class="bg-amber-200 text-amber-900 px-1.5 rounded font-extrabold">ladra</span> mucho.</li>
+                            <li>Hoy <span class="bg-amber-200 text-amber-900 px-1.5 rounded font-extrabold">hace</span> <span class="bg-sky-100 text-sky-800 px-1.5 rounded font-extrabold">sol</span>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-indigo-50 border-2 border-indigo-200 rounded-2xl p-4 mb-6 text-sm sm:text-base text-indigo-900 font-bold">
+                🎯 ¡Nuevo reto! Tras elegir si es frase u oración, tendrás que <span class="text-sky-700 underline">tocar el nombre</span> (y el <span class="text-amber-700 underline">verbo</span> si es oración).
+            </div>
+
+            <button type="button" id="btn-start" class="btn-3d bg-sky-500 hover:bg-sky-600 text-white font-display font-bold text-xl sm:text-2xl py-4 px-10 rounded-2xl cursor-pointer w-full sm:w-auto">
+                ¡Empezar a jugar! 🚀
+            </button>
+        </section>
+
+        <!-- PANTALLA 2: JUEGO INTERACTIVO -->
+        <section id="screen-game" class="hidden flex-col gap-5">
+            <!-- Barra de progreso y puntuación -->
+            <div class="bg-white/90 rounded-2xl p-4 shadow-md border-2 border-sky-100 flex items-center justify-between gap-4">
+                <div class="flex-grow">
+                    <div class="flex justify-between text-xs sm:text-sm font-bold text-slate-600 mb-1">
+                        <span>Pregunta <span id="q-current">1</span> de <span id="q-total">10</span></span>
+                        <span id="streak-badge" class="text-amber-600 hidden">🔥 ¡Racha de <span id="streak-count">0</span>!</span>
+                    </div>
+                    <div class="w-full bg-slate-200 rounded-full h-3.5 overflow-hidden">
+                        <div id="progress-bar" class="bg-gradient-to-r from-sky-400 to-indigo-500 h-3.5 rounded-full transition-all duration-500" style="width: 10%"></div>
+                    </div>
+                </div>
+                <div class="bg-amber-100 border-2 border-amber-300 px-4 py-1.5 rounded-2xl flex items-center gap-1.5 shrink-0">
+                    <span class="text-xl">⭐</span>
+                    <span id="score-display" class="font-display font-bold text-xl text-amber-800">0</span>
+                </div>
+            </div>
+
+            <!-- Tarjeta del Enunciado -->
+            <div id="question-card" class="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border-4 border-indigo-200 text-center relative transition-all">
+                <span id="step-badge" class="inline-block bg-indigo-100 text-indigo-700 font-bold px-4 py-1.5 rounded-full text-xs sm:text-sm mb-4">
+                    🔍 Paso 1: ¿Es una frase o una oración?
+                </span>
+
+                <!-- Texto a analizar (Contenedor interactivo para tocar palabras en el Paso 2) -->
+                <div class="min-h-[110px] sm:min-h-[130px] flex flex-col items-center justify-center my-2">
+                    <div id="sentence-container" class="font-display text-2xl sm:text-4xl font-bold text-slate-800 leading-relaxed flex flex-wrap items-center justify-center gap-x-2 gap-y-2">
+                        "El gato duerme en el sofá."
+                    </div>
+                    <!-- Leyenda de colores que aparece al señalar palabras -->
+                    <div id="word-legend" class="hidden mt-4 flex flex-wrap items-center justify-center gap-3 text-xs sm:text-sm font-bold">
+                        <span id="legend-noun" class="bg-sky-100 text-sky-800 border border-sky-300 px-3 py-1 rounded-full flex items-center gap-1.5">
+                            <span>🏷️</span> Nombre: <span id="status-noun">Pendiente</span>
+                        </span>
+                        <span id="legend-verb" class="hidden bg-amber-100 text-amber-900 border border-amber-300 px-3 py-1 rounded-full flex items-center gap-1.5">
+                            <span>⚡</span> Verbo: <span id="status-verb">Pendiente</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Botones de respuesta (Paso 1) -->
+                <div id="answer-buttons" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                    <button type="button" id="btn-choice-frase" class="btn-3d bg-rose-500 hover:bg-rose-600 text-white rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center cursor-pointer">
+                        <span class="font-display text-2xl sm:text-3xl font-bold">Es una FRASE</span>
+                        <span class="text-rose-100 text-sm font-semibold mt-1">🚫 No tiene verbo</span>
+                    </button>
+
+                    <button type="button" id="btn-choice-oracion" class="btn-3d bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center cursor-pointer">
+                        <span class="font-display text-2xl sm:text-3xl font-bold">Es una ORACIÓN</span>
+                        <span class="text-emerald-100 text-sm font-semibold mt-1">✅ Sí tiene verbo</span>
+                    </button>
+                </div>
+
+                <!-- Zona de Instrucción del Paso 2 (Tocar palabras) -->
+                <div id="word-task-box" class="hidden mt-5 bg-indigo-50 border-2 border-indigo-200 rounded-2xl p-4 animate-bounce-in">
+                    <p id="word-task-instruction" class="font-display text-lg sm:text-xl font-bold text-indigo-900">
+                        👆 Ahora toca en el texto el NOMBRE (sustantivo)
+                    </p>
+                    <p id="word-task-hint" class="text-xs sm:text-sm text-indigo-600 font-semibold mt-1">
+                        Pulsa directamente sobre la palabra correcta arriba
+                    </p>
+                </div>
+
+                <!-- Zona de Feedback (Explicación tras completar ambos pasos) -->
+                <div id="feedback-box" class="hidden mt-6 rounded-2xl p-5 text-left border-2 animate-bounce-in">
+                    <div class="flex items-start gap-3">
+                        <div id="feedback-icon" class="text-3xl sm:text-4xl shrink-0">🎉</div>
+                        <div class="flex-grow">
+                            <h3 id="feedback-title" class="font-display text-xl sm:text-2xl font-bold mb-1">¡Muy bien!</h3>
+                            <p id="feedback-explanation" class="text-base sm:text-lg font-semibold leading-relaxed"></p>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-right">
+                        <button type="button" id="btn-next" class="btn-3d bg-indigo-600 hover:bg-indigo-700 text-white font-display font-bold text-lg py-3 px-8 rounded-xl cursor-pointer w-full sm:w-auto">
+                            Siguiente ➔
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PANTALLA 3: RESULTADOS FINALES -->
+        <section id="screen-end" class="hidden bg-white rounded-3xl p-6 sm:p-10 shadow-xl border-4 border-emerald-300 text-center animate-bounce-in">
+            <div id="trophy-icon" class="text-6xl sm:text-7xl mb-3">🏆</div>
+            <h2 class="font-display text-3xl sm:text-4xl font-bold text-slate-800 mb-2">¡Misión Completada!</h2>
+            <p id="end-message" class="text-lg text-slate-600 font-bold mb-6">¡Eres un auténtico experto en Lengua!</p>
+
+            <!-- Resumen de puntuación -->
+            <div class="bg-amber-50 border-2 border-amber-200 rounded-3xl p-6 max-w-md mx-auto mb-8">
+                <p class="text-sm font-bold text-amber-700 uppercase tracking-wider mb-1">Tu puntuación final</p>
+                <div class="font-display text-5xl font-bold text-amber-500 mb-2">
+                    <span id="final-score">0</span> <span class="text-2xl text-amber-700">/ <span id="final-total">10</span></span>
+                </div>
+                <div id="stars-container" class="text-3xl tracking-widest mt-2">
+                    ⭐⭐⭐
+                </div>
+            </div>
+
+            <!-- Repaso de fallos si los hubo -->
+            <div id="review-section" class="hidden text-left bg-slate-50 rounded-2xl p-4 sm:p-6 border-2 border-slate-200 mb-8 max-h-60 overflow-y-auto">
+                <h3 class="font-display font-bold text-lg text-slate-700 mb-3">📝 Repasamos las que fallaste:</h3>
+                <ul id="mistakes-list" class="space-y-2 text-sm sm:text-base">
+                    <!-- Se llena dinámicamente -->
+                </ul>
+            </div>
+
+            <button type="button" id="btn-restart" class="btn-3d bg-emerald-500 hover:bg-emerald-600 text-white font-display font-bold text-xl py-4 px-10 rounded-2xl cursor-pointer">
+                🔄 Jugar otra vez con nuevos ejemplos
+            </button>
+        </section>
+
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="w-full max-w-3xl text-center text-slate-500 text-xs sm:text-sm font-semibold mt-6 pb-2">
+        💡 Truco: Pregúntate <strong>"¿Alguien hace algo?"</strong>. Si hay acción, ¡es una oración!
+    </footer>
+
+    <!-- MODAL DE AYUDA (REGLA) -->
+    <div id="theory-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border-4 border-indigo-300 animate-bounce-in">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-display text-2xl font-bold text-indigo-700">💡 Chuleta de Detective</h3>
+                <button type="button" id="btn-close-modal-x" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold w-9 h-9 rounded-full flex items-center justify-center cursor-pointer">✕</button>
+            </div>
+            
+            <div class="space-y-4 text-slate-700">
+                <div class="bg-rose-50 p-4 rounded-2xl border-2 border-rose-200">
+                    <h4 class="font-display font-bold text-rose-700 text-lg">1. La FRASE (Sin verbo)</h4>
+                    <p class="text-sm mt-1">Son palabras con sentido pero <strong>no tienen ningún verbo</strong>. Sí tienen <strong>nombres (sustantivos)</strong> que nombran cosas, personas o ideas.</p>
+                    <p class="text-sm font-bold text-rose-800 mt-2">Ejemplos: "¡Qué <span class="bg-sky-200 px-1 rounded">susto</span>!", "¡Buenos <span class="bg-sky-200 px-1 rounded">días</span>!".</p>
+                </div>
+
+                <div class="bg-emerald-50 p-4 rounded-2xl border-2 border-emerald-200">
+                    <h4 class="font-display font-bold text-emerald-700 text-lg">2. La ORACIÓN (Con nombre y verbo)</h4>
+                    <p class="text-sm mt-1">Tiene <strong>al menos un verbo conjugado</strong> (acción) y suele tener un <strong>nombre</strong> que realiza o recibe la acción.</p>
+                    <p class="text-sm font-bold text-emerald-800 mt-2">Ejemplo: "Mis <span class="bg-sky-200 px-1 rounded">amigos</span> <span class="bg-amber-200 px-1 rounded">juegan</span> al baloncesto."</p>
+                </div>
+            </div>
+
+            <button type="button" id="btn-close-modal" class="btn-3d bg-indigo-600 hover:bg-indigo-700 text-white font-display font-bold w-full py-3 rounded-xl mt-6 cursor-pointer">
+                ¡Entendido! Volver al juego
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            /**
+             * BANCO DE PREGUNTAS ADAPTADO A 3º DE PRIMARIA (8-9 años)
+             * Cada entrada define:
+             * - text: Enunciado completo
+             * - type: "oracion" o "frase"
+             * - nouns: Lista de nombres/sustantivos válidos en el enunciado (en minúsculas sin puntuación)
+             * - verb: El verbo principal (o null si es frase)
+             * - explanation: Explicación pedagógica completa
+             */
+            const questionBank = [
+                // --- ORACIONES (Tienen nombre y verbo) ---
+                {
+                    text: "Mi perro Toby persigue la pelota roja.",
+                    type: "oracion",
+                    nouns: ["perro", "toby", "pelota"],
+                    verb: "persigue",
+                    explanation: "Es una <strong>oración</strong> con el nombre <strong>«perro / Toby / pelota»</strong> y el verbo <strong>«persigue»</strong>."
+                },
+                {
+                    text: "Ayer comimos macarrones con tomate.",
+                    type: "oracion",
+                    nouns: ["macarrones", "tomate"],
+                    verb: "comimos",
+                    explanation: "Es una <strong>oración</strong> con el verbo <strong>«comimos»</strong> y los nombres <strong>«macarrones / tomate»</strong>."
+                },
+                {
+                    text: "La profesora explica la lección de Lengua.",
+                    type: "oracion",
+                    nouns: ["profesora", "lección", "lengua"],
+                    verb: "explica",
+                    explanation: "Es una <strong>oración</strong> con el nombre <strong>«profesora»</strong> y el verbo <strong>«explica»</strong>."
+                },
+                {
+                    text: "¡Qué alto salta ese canguro!",
+                    type: "oracion",
+                    nouns: ["canguro"],
+                    verb: "salta",
+                    explanation: "¡Aunque lleve exclamaciones, es una <strong>oración</strong>! Tiene el nombre <strong>«canguro»</strong> y el verbo <strong>«salta»</strong>."
+                },
+                {
+                    text: "Mañana iremos de excursión al museo.",
+                    type: "oracion",
+                    nouns: ["excursión", "museo"],
+                    verb: "iremos",
+                    explanation: "Es una <strong>oración</strong> con el verbo <strong>«iremos»</strong> y los nombres <strong>«excursión / museo»</strong>."
+                },
+                {
+                    text: "El cielo está lleno de estrellas brillantes.",
+                    type: "oracion",
+                    nouns: ["cielo", "estrellas"],
+                    verb: "está",
+                    explanation: "Es una <strong>oración</strong> con el nombre <strong>«cielo»</strong> y el verbo <strong>«está»</strong>."
+                },
+                {
+                    text: "Marta y Leo dibujan un dragón gigante.",
+                    type: "oracion",
+                    nouns: ["marta", "leo", "dragón"],
+                    verb: "dibujan",
+                    explanation: "Es una <strong>oración</strong> con los nombres <strong>«Marta / Leo / dragón»</strong> y el verbo <strong>«dibujan»</strong>."
+                },
+                {
+                    text: "Los pájaros cantan en los árboles del parque.",
+                    type: "oracion",
+                    nouns: ["pájaros", "árboles", "parque"],
+                    verb: "cantan",
+                    explanation: "Es una <strong>oración</strong> con el nombre <strong>«pájaros»</strong> y el verbo <strong>«cantan»</strong>."
+                },
+                {
+                    text: "Mi hermana pequeña tiene cuatro años.",
+                    type: "oracion",
+                    nouns: ["hermana", "años"],
+                    verb: "tiene",
+                    explanation: "Es una <strong>oración</strong> con el nombre <strong>«hermana»</strong> y el verbo <strong>«tiene»</strong>."
+                },
+                {
+                    text: "El tren llegó muy puntual a la estación.",
+                    type: "oracion",
+                    nouns: ["tren", "estación"],
+                    verb: "llegó",
+                    explanation: "Es una <strong>oración</strong> con el nombre <strong>«tren»</strong> y el verbo <strong>«llegó»</strong>."
+                },
+
+                // --- FRASES (Tienen nombre pero NO tienen verbo) ---
+                {
+                    text: "¡Buenos días, clase!",
+                    type: "frase",
+                    nouns: ["días", "clase"],
+                    verb: null,
+                    explanation: "Es una <strong>frase</strong> (no tiene verbo), pero sí tiene los nombres <strong>«días»</strong> y <strong>«clase»</strong>."
+                },
+                {
+                    text: "¡Qué película tan divertida!",
+                    type: "frase",
+                    nouns: ["película"],
+                    verb: null,
+                    explanation: "Es una <strong>frase</strong> exclamativa sin verbo. Su nombre principal es <strong>«película»</strong>."
+                },
+                {
+                    text: "Un bocadillo de tortilla de patatas.",
+                    type: "frase",
+                    nouns: ["bocadillo", "tortilla", "patatas"],
+                    verb: null,
+                    explanation: "Es una <strong>frase</strong> sin verbo con los nombres <strong>«bocadillo / tortilla / patatas»</strong>."
+                },
+                {
+                    text: "¡Muchas felicidades por tu cumpleaños!",
+                    type: "frase",
+                    nouns: ["felicidades", "cumpleaños"],
+                    verb: null,
+                    explanation: "Es una <strong>frase</strong> sin verbo. Tiene los nombres <strong>«felicidades»</strong> y <strong>«cumpleaños»</strong>."
+                },
+                {
+                    text: "¡Silencio en la biblioteca, por favor!",
+                    type: "frase",
+                    nouns: ["silencio", "biblioteca", "favor"],
+                    verb: null,
+                    explanation: "Es una <strong>frase</strong> sin verbo con los nombres <strong>«silencio»</strong> y <strong>«biblioteca»</strong>."
+                },
+                {
+                    text: "¡Menudo susto!",
+                    type: "frase",
+                    nouns: ["susto"],
+                    verb: null,
+                    explanation: "Es una <strong>frase</strong> corta sin verbo. El nombre es <strong>«susto»</strong>."
+                },
+                {
+                    text: "Salida de emergencia.",
+                    type: "frase",
+                    nouns: ["salida", "emergencia"],
+                    verb: null,
+                    explanation: "Es una <strong>frase</strong> de cartel sin verbo, formada por los nombres <strong>«salida»</strong> y <strong>«emergencia»</strong>."
+                },
+                {
+                    text: "Un día muy soleado en la playa.",
+                    type: "frase",
+                    nouns: ["día", "playa"],
+                    verb: null,
+                    explanation: "Es una <strong>frase</strong> sin verbo con los nombres <strong>«día»</strong> y <strong>«playa»</strong>."
+                },
+                {
+                    text: "¡Hasta mañana, amigos!",
+                    type: "frase",
+                    nouns: ["amigos"],
+                    verb: null,
+                    explanation: "Es una <strong>frase</strong> de despedida sin verbo. El nombre es <strong>«amigos»</strong>."
+                },
+                {
+                    text: "¡Golazo por toda la escuadra!",
+                    type: "frase",
+                    nouns: ["golazo", "escuadra"],
+                    verb: null,
+                    explanation: "Es una <strong>frase</strong> exclamativa sin verbo con los nombres <strong>«golazo»</strong> y <strong>«escuadra»</strong>."
+                }
+            ];
+
+            // Variables de estado del juego
+            const QUESTIONS_PER_GAME = 10;
+            let currentQuestions = [];
+            let currentIndex = 0;
+            let score = 0;
+            let streak = 0;
+            let mistakes = [];
+            let soundEnabled = true;
+            let synth = null;
+
+            // Estado por pregunta (Fases: 'classify' -> 'select_words' -> 'done')
+            let questionPhase = 'classify';
+            let step1Correct = false;
+            let foundNoun = false;
+            let foundVerb = false;
+            let hadWordError = false;
+
+            // Referencias al DOM
+            const screenStart = document.getElementById('screen-start');
+            const screenGame = document.getElementById('screen-game');
+            const screenEnd = document.getElementById('screen-end');
+            const theoryModal = document.getElementById('theory-modal');
+
+            /**
+             * Limpia signos de puntuación para comparar palabras
+             */
+            function cleanWord(word) {
+                return word.toLowerCase().replace(/[¡!¿?.,;:()"]/g, '').trim();
+            }
+
+            /**
+             * Sistema de sonido seguro
+             */
+            async function playSound(type) {
+                if (!soundEnabled || typeof Tone === 'undefined') return;
+                try {
+                    if (Tone.context.state !== 'running') {
+                        await Tone.start();
+                    }
+                    if (!synth) {
+                        synth = new Tone.Synth().toDestination();
+                    }
+                    const now = Tone.now();
+
+                    if (type === 'tap') {
+                        synth.triggerAttackRelease("G5", "32n", now);
+                    } else if (type === 'correct') {
+                        synth.triggerAttackRelease("C5", "16n", now);
+                        synth.triggerAttackRelease("E5", "16n", now + 0.08);
+                        synth.triggerAttackRelease("G5", "8n", now + 0.16);
+                    } else if (type === 'wrong') {
+                        synth.triggerAttackRelease("E3", "8n", now);
+                        synth.triggerAttackRelease("C3", "4n", now + 0.15);
+                    } else if (type === 'win') {
+                        synth.triggerAttackRelease("C5", "8n", now);
+                        synth.triggerAttackRelease("E5", "8n", now + 0.12);
+                        synth.triggerAttackRelease("G5", "8n", now + 0.24);
+                        synth.triggerAttackRelease("C6", "4n", now + 0.36);
+                    }
+                } catch (e) {
+                    // Ignorar errores de audio
+                }
+            }
+
+            function toggleSound() {
+                soundEnabled = !soundEnabled;
+                document.getElementById('btn-sound').textContent = soundEnabled ? '🔊' : '🔇';
+            }
+
+            function toggleTheoryModal() {
+                theoryModal.classList.toggle('hidden');
+            }
+
+            function shuffleArray(array) {
+                const copy = [...array];
+                for (let i = copy.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [copy[i], copy[j]] = [copy[j], copy[i]];
+                }
+                return copy;
+            }
+
+            function startGame() {
+                currentQuestions = shuffleArray(questionBank).slice(0, QUESTIONS_PER_GAME);
+                currentIndex = 0;
+                score = 0;
+                streak = 0;
+                mistakes = [];
+
+                document.getElementById('q-total').textContent = QUESTIONS_PER_GAME;
+                document.getElementById('score-display').textContent = '0';
+                updateStreakUI();
+
+                screenStart.classList.add('hidden');
+                screenEnd.classList.add('hidden');
+                screenGame.classList.remove('hidden');
+                screenGame.classList.add('flex');
+
+                loadQuestion();
+            }
+
+            /**
+             * Renderiza el texto del enunciado como palabras individuales (interactivas en el Paso 2)
+             */
+            function renderSentenceWords(interactive) {
+                const q = currentQuestions[currentIndex];
+                const container = document.getElementById('sentence-container');
+                container.innerHTML = '';
+
+                const words = q.text.split(' ');
+                words.forEach((rawWord) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.textContent = rawWord;
+                    btn.dataset.clean = cleanWord(rawWord);
+
+                    if (interactive) {
+                        btn.className = 'word-token px-2.5 py-1 rounded-xl border-2 border-slate-200 bg-slate-50 hover:bg-indigo-50 hover:border-indigo-300 transition-all cursor-pointer active:scale-95';
+                        btn.addEventListener('click', () => handleWordClick(btn));
+                    } else {
+                        btn.className = 'px-1 py-0.5 rounded-lg cursor-default';
+                        btn.disabled = true;
+                    }
+
+                    container.appendChild(btn);
+                });
+            }
+
+            /**
+             * Carga la pregunta actual en pantalla
+             */
+            function loadQuestion() {
+                questionPhase = 'classify';
+                step1Correct = false;
+                foundNoun = false;
+                foundVerb = false;
+                hadWordError = false;
+
+                document.getElementById('q-current').textContent = currentIndex + 1;
+                const progressPercent = (currentIndex / QUESTIONS_PER_GAME) * 100;
+                document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+
+                document.getElementById('step-badge').textContent = '🔍 Paso 1: ¿Es una frase o una oración?';
+                document.getElementById('step-badge').className = 'inline-block bg-indigo-100 text-indigo-700 font-bold px-4 py-1.5 rounded-full text-xs sm:text-sm mb-4';
+
+                renderSentenceWords(false);
+
+                const card = document.getElementById('question-card');
+                card.classList.remove('border-emerald-400', 'border-rose-400', 'animate-shake');
+                card.classList.add('border-indigo-200');
+
+                document.getElementById('answer-buttons').classList.remove('hidden');
+                document.getElementById('word-task-box').classList.add('hidden');
+                document.getElementById('word-legend').classList.add('hidden');
+                document.getElementById('feedback-box').classList.add('hidden');
+            }
+
+            /**
+             * Paso 1: Comprueba si el alumno acierta Frase vs Oración y pasa al Paso 2
+             */
+            function checkClassification(userChoice) {
+                if (questionPhase !== 'classify') return;
+
+                const q = currentQuestions[currentIndex];
+                step1Correct = (userChoice === q.type);
+                const card = document.getElementById('question-card');
+
+                document.getElementById('answer-buttons').classList.add('hidden');
+
+                if (step1Correct) {
+                    playSound('tap');
+                    card.classList.remove('border-indigo-200');
+                    card.classList.add('border-emerald-400');
+                } else {
+                    playSound('wrong');
+                    card.classList.remove('border-indigo-200');
+                    card.classList.add('border-rose-400', 'animate-shake');
+                    setTimeout(() => card.classList.remove('animate-shake'), 450);
+                }
+
+                // Iniciar Paso 2: Señalar palabras
+                startWordSelectionPhase();
+            }
+
+            /**
+             * Paso 2: Prepara la interacción para tocar Nombre (y Verbo si es oración)
+             */
+            function startWordSelectionPhase() {
+                questionPhase = 'select_words';
+                const q = currentQuestions[currentIndex];
+
+                // Actualizar etiqueta superior
+                const prefix = step1Correct 
+                    ? `✅ ¡Bien! Es una ${q.type.toUpperCase()}. ` 
+                    : `🧐 ¡Ojo! En realidad es una ${q.type.toUpperCase()}. `;
+
+                document.getElementById('step-badge').textContent = prefix + 'Ahora toca las palabras clave';
+                document.getElementById('step-badge').className = step1Correct
+                    ? 'inline-block bg-emerald-100 text-emerald-800 font-bold px-4 py-1.5 rounded-full text-xs sm:text-sm mb-4'
+                    : 'inline-block bg-rose-100 text-rose-800 font-bold px-4 py-1.5 rounded-full text-xs sm:text-sm mb-4';
+
+                // Convertir palabras en botones táctiles
+                renderSentenceWords(true);
+
+                // Configurar leyenda y estado de búsqueda
+                const wordLegend = document.getElementById('word-legend');
+                const legendVerb = document.getElementById('legend-verb');
+                document.getElementById('status-noun').textContent = '❓ Toca uno';
+                document.getElementById('status-verb').textContent = '❓ Tócalo';
+
+                wordLegend.classList.remove('hidden');
+                if (q.type === 'oracion') {
+                    legendVerb.classList.remove('hidden');
+                } else {
+                    legendVerb.classList.add('hidden');
+                }
+
+                updateWordTaskInstruction();
+                document.getElementById('word-task-box').classList.remove('hidden');
+            }
+
+            /**
+             * Actualiza el texto guía según lo que falte por tocar (Nombre y/o Verbo)
+             */
+            function updateWordTaskInstruction() {
+                const q = currentQuestions[currentIndex];
+                const inst = document.getElementById('word-task-instruction');
+                const hint = document.getElementById('word-task-hint');
+
+                if (q.type === 'frase') {
+                    inst.innerHTML = '👆 Toca en la frase un <span class="text-sky-700 bg-sky-100 px-2 py-0.5 rounded-lg">NOMBRE</span> (sustantivo)';
+                    hint.textContent = '¿Qué palabra nombra una persona, animal, cosa o idea?';
+                } else {
+                    if (!foundNoun && !foundVerb) {
+                        inst.innerHTML = '👆 Toca un <span class="text-sky-700 bg-sky-100 px-2 py-0.5 rounded-lg">NOMBRE</span> y el <span class="text-amber-800 bg-amber-200 px-2 py-0.5 rounded-lg">VERBO</span>';
+                        hint.textContent = 'Puedes tocarlos en el orden que quieras';
+                    } else if (!foundNoun) {
+                        inst.innerHTML = '✅ ¡Verbo encontrado! Ahora toca un <span class="text-sky-700 bg-sky-100 px-2 py-0.5 rounded-lg">NOMBRE</span>';
+                        hint.textContent = 'Busca la palabra que nombra quién hace la acción o un objeto';
+                    } else if (!foundVerb) {
+                        inst.innerHTML = '✅ ¡Nombre encontrado! Ahora toca el <span class="text-amber-800 bg-amber-200 px-2 py-0.5 rounded-lg">VERBO</span>';
+                        hint.textContent = 'Busca la palabra que indica la acción';
+                    }
+                }
+            }
+
+            /**
+             * Gestiona el clic/toque sobre una palabra del enunciado
+             */
+            function handleWordClick(btn) {
+                if (questionPhase !== 'select_words' || btn.disabled) return;
+
+                const q = currentQuestions[currentIndex];
+                const word = btn.dataset.clean;
+
+                const isNoun = q.nouns.includes(word);
+                const isVerb = (q.type === 'oracion' && q.verb && word === q.verb.toLowerCase());
+
+                if (isNoun && !foundNoun) {
+                    foundNoun = true;
+                    btn.disabled = true;
+                    btn.className = 'px-2.5 py-1 rounded-xl border-2 border-sky-500 bg-sky-200 text-sky-950 font-extrabold shadow-sm cursor-default';
+                    document.getElementById('status-noun').textContent = '✅ ¡Listo!';
+                    playSound('tap');
+                } else if (isVerb && !foundVerb) {
+                    foundVerb = true;
+                    btn.disabled = true;
+                    btn.className = 'px-2.5 py-1 rounded-xl border-2 border-amber-500 bg-amber-200 text-amber-950 font-extrabold shadow-sm cursor-default';
+                    document.getElementById('status-verb').textContent = '✅ ¡Listo!';
+                    playSound('tap');
+                } else if (isNoun && foundNoun) {
+                    // Ya había encontrado un nombre, pero tocó otro nombre válido del enunciado
+                    btn.disabled = true;
+                    btn.className = 'px-2.5 py-1 rounded-xl border-2 border-sky-400 bg-sky-100 text-sky-900 font-bold cursor-default';
+                    playSound('tap');
+                } else {
+                    // Palabra incorrecta (determinante, adjetivo, preposición...)
+                    hadWordError = true;
+                    playSound('wrong');
+                    btn.classList.add('border-rose-400', 'bg-rose-100', 'text-rose-800', 'animate-shake');
+                    setTimeout(() => {
+                        btn.classList.remove('border-rose-400', 'bg-rose-100', 'text-rose-800', 'animate-shake');
+                    }, 500);
+                    return;
+                }
+
+                // Comprobar si ya completó todos los objetivos de palabras
+                const allFound = (q.type === 'frase') ? foundNoun : (foundNoun && foundVerb);
+                if (allFound) {
+                    finishQuestion();
+                } else {
+                    updateWordTaskInstruction();
+                }
+            }
+
+            /**
+             * Finaliza la pregunta tras completar la clasificación y la selección de palabras
+             */
+            function finishQuestion() {
+                questionPhase = 'done';
+                const q = currentQuestions[currentIndex];
+
+                // Deshabilitar botones restantes que no se tocaron
+                document.querySelectorAll('.word-token').forEach(btn => {
+                    if (!btn.disabled) {
+                        btn.disabled = true;
+                        btn.className = 'px-1.5 py-1 rounded-xl text-slate-600 cursor-default';
+                    }
+                });
+
+                document.getElementById('word-task-box').classList.add('hidden');
+
+                const feedbackBox = document.getElementById('feedback-box');
+                const feedbackIcon = document.getElementById('feedback-icon');
+                const feedbackTitle = document.getElementById('feedback-title');
+                const feedbackExp = document.getElementById('feedback-explanation');
+
+                feedbackBox.classList.remove(
+                    'hidden',
+                    'bg-emerald-50', 'border-emerald-300', 'text-emerald-900',
+                    'bg-rose-50', 'border-rose-300', 'text-rose-900'
+                );
+
+                if (step1Correct) {
+                    score++;
+                    streak++;
+                    playSound('correct');
+                    document.getElementById('score-display').textContent = score;
+
+                    feedbackBox.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-900');
+                    feedbackIcon.textContent = streak >= 3 ? '🔥' : '🎉';
+                    feedbackTitle.textContent = hadWordError 
+                        ? '¡Misión conseguida!' 
+                        : (streak >= 3 ? '¡Detective experto! ¡Imparable!' : '¡Perfecto! Todo encontrado.');
+                } else {
+                    streak = 0;
+                    mistakes.push(q);
+
+                    feedbackBox.classList.add('bg-rose-50', 'border-rose-300', 'text-rose-900');
+                    feedbackIcon.textContent = '💡';
+                    feedbackTitle.textContent = '¡Bien señaladas las palabras! Recuerda:';
+                }
+
+                updateStreakUI();
+                feedbackExp.innerHTML = q.explanation;
+                feedbackBox.classList.remove('hidden');
+            }
+
+            function updateStreakUI() {
+                const badge = document.getElementById('streak-badge');
+                const count = document.getElementById('streak-count');
+                if (streak >= 2) {
+                    badge.classList.remove('hidden');
+                    count.textContent = streak;
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
+
+            function nextQuestion() {
+                currentIndex++;
+                if (currentIndex < QUESTIONS_PER_GAME) {
+                    loadQuestion();
+                } else {
+                    showResults();
+                }
+            }
+
+            function showResults() {
+                playSound('win');
+                document.getElementById('progress-bar').style.width = '100%';
+
+                screenGame.classList.add('hidden');
+                screenGame.classList.remove('flex');
+                screenEnd.classList.remove('hidden');
+
+                document.getElementById('final-score').textContent = score;
+                document.getElementById('final-total').textContent = QUESTIONS_PER_GAME;
+
+                const trophy = document.getElementById('trophy-icon');
+                const msg = document.getElementById('end-message');
+                const stars = document.getElementById('stars-container');
+
+                if (score === QUESTIONS_PER_GAME) {
+                    trophy.textContent = '👑';
+                    msg.textContent = '¡PERFECCIÓN ABSOLUTA! Dominas frases, oraciones, nombres y verbos.';
+                    stars.textContent = '⭐⭐⭐⭐⭐';
+                } else if (score >= 7) {
+                    trophy.textContent = '🏆';
+                    msg.textContent = '¡Genial! Sabes diferenciar muy bien frases y oraciones.';
+                    stars.textContent = '⭐⭐⭐⭐';
+                } else if (score >= 5) {
+                    trophy.textContent = '👍';
+                    msg.textContent = '¡Buen trabajo! Con un poco más de práctica lo dominarás.';
+                    stars.textContent = '⭐⭐⭐';
+                } else {
+                    trophy.textContent = '💪';
+                    msg.textContent = '¡Ánimo! Recuerda buscar siempre si hay una acción (verbo).';
+                    stars.textContent = '⭐⭐';
+                }
+
+                const reviewSection = document.getElementById('review-section');
+                const mistakesList = document.getElementById('mistakes-list');
+                mistakesList.innerHTML = '';
+
+                if (mistakes.length > 0) {
+                    reviewSection.classList.remove('hidden');
+                    mistakes.forEach(item => {
+                        const li = document.createElement('li');
+                        li.className = 'bg-white p-3 rounded-xl border border-slate-200';
+                        const badge = item.type === 'oracion' 
+                            ? '<span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-xs">ORACIÓN</span>'
+                            : '<span class="bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded text-xs">FRASE</span>';
+                        
+                        li.innerHTML = `
+                            <div class="font-bold text-slate-800 mb-1">"${item.text}" ${badge}</div>
+                            <div class="text-slate-600 text-xs sm:text-sm">${item.explanation}</div>
+                        `;
+                        mistakesList.appendChild(li);
+                    });
+                } else {
+                    reviewSection.classList.add('hidden');
+                }
+            }
+
+            // Asignación de eventos
+            document.getElementById('btn-start').addEventListener('click', startGame);
+            document.getElementById('btn-restart').addEventListener('click', startGame);
+            document.getElementById('btn-choice-frase').addEventListener('click', () => checkClassification('frase'));
+            document.getElementById('btn-choice-oracion').addEventListener('click', () => checkClassification('oracion'));
+            document.getElementById('btn-next').addEventListener('click', nextQuestion);
+            document.getElementById('btn-help').addEventListener('click', toggleTheoryModal);
+            document.getElementById('btn-close-modal').addEventListener('click', toggleTheoryModal);
+            document.getElementById('btn-close-modal-x').addEventListener('click', toggleTheoryModal);
+            document.getElementById('btn-sound').addEventListener('click', toggleSound);
+
+            theoryModal.addEventListener('click', (e) => {
+                if (e.target === theoryModal) {
+                    toggleTheoryModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
